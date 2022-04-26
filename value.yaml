@@ -1,0 +1,4 @@
+licenseServer: host.minikube.internal:1443
+exposePorts: [8000, 8010]
+images:
+  pullPolicy: IfNotPresent

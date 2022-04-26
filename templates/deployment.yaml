@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ready-api-virtserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: ready-api-virtserver
+  template:
+    metadata:
+      annotations:
+        rollme: {{ uuidv4 }}
+      labels:
+        run: ready-api-virtserver
+    spec:
+      containers:
+        - name: ready-api-virtserver
+          image: "smartbear/ready-api-virtserver:3.10.0"
+          imagePullPolicy: {{ .Values.images.pullPolicy | quote }}
+          env:
+            - name: VirtServerUserRole
+              value: ADMIN
+            - name: VirtServerUser
+              value: defaultUser
+            - name: VirtServerPassword
+              value: svp4ever
+            - name: UseHTTPS
+              value: "false"
+            - name: ACCEPT_TOU
+              value: "true"
+            - name: VirtServerLicenseServer
+              value: {{ .Values.licenseServer }}
+          ports:
+            - containerPort: 9090
+            {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | int) 1 }}
+            - containerPort: {{$e | int}}
+            {{ end }}
