@@ -31,8 +31,16 @@ spec:
               value: "true"
             - name: VirtServerLicenseServer
               value: {{ .Values.licenseServer }}
+          volumeMounts:
+            - name: virtserver-config-folder
+              mountPath: /virtserver
+              readOnly: false
           ports:
             - containerPort: 9090
             {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | int) 1 }}
             - containerPort: {{$e | int}}
             {{ end }}
+      volumes:
+        - name: virtserver-config-folder
+          persistentVolumeClaim:
+            claimName: virtserver-config-folder
