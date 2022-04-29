@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: ready-api-virtserver
 spec:
+  strategy:
+    type: Recreate
   replicas: 1
   selector:
     matchLabels:
@@ -37,9 +39,22 @@ spec:
               readOnly: false
           ports:
             - containerPort: 9090
+              name: virtserver
             {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | int) 1 }}
             - containerPort: {{$e | int}}
             {{ end }}
+          readinessProbe:
+            httpGet:
+              path: /api/v3/info/about/
+              port: virtserver
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /api/v3/info/about/
+              port: 9090
+            initialDelaySeconds: 30
+            periodSeconds: 15
       volumes:
         - name: virtserver-config-folder
           persistentVolumeClaim:
