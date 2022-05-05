@@ -9,7 +9,7 @@ spec:
   ports:
     - name: admin
       port: 9090
-    {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | int) 1 }}
+    {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | add 1 | int) 1 }}
     - name: virt-port-{{$e}}
       port: {{$e}}
     {{ end }}

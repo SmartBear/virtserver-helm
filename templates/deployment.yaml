@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
         - name: ready-api-virtserver
-          image: "smartbear/ready-api-virtserver:3.10.0"
-          imagePullPolicy: {{ .Values.images.pullPolicy | quote }}
+          image: {{ .Values.image }}
+          imagePullPolicy: IfNotPresent
           env:
             - name: VirtServerUserRole
               value: ADMIN
