@@ -1,4 +1,4 @@
 licenseServer: host.minikube.internal:1443
 exposePorts: [8000, 8010]
 configStorageSize: 1Gi
-image: smartbear/ready-api-virtserver:3.10.0
+image: smartbear/ready-api-virtserver:3.12.1
