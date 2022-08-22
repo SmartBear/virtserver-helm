@@ -1,7 +1,7 @@
 VirtServer Helm Chart
 =====================
 
-This is a starting point for running VirtServer in kubernetes utilizing helm charts. Any user might need to modify it
+This is a starting point for running VirtServer in kubernetes utilizing helm charts. Users might need to modify it
 to their needs. This helm chart was last updated 2022-08-18 for VirtServer 3.12.1.
 
 Managing
@@ -27,13 +27,12 @@ When it is time to bring down VirtServer you run:
 
 Configuration
 -------------
-Within this repository there is an example of what values.yaml could look like. This values.yaml file contains a few 
-fields that allow you to configure.
+Within this repository there is an example of what values.yaml could look like.
 
 ### licenseServer
 Where ProtectionLS license server is running. Make sure that any network configuration needed is done so that the 
 VirtServer node can reach the license server. If the license server can't be reached or doesn't have a valid VirtServer
-license then VirtServer won't be able to start
+license then VirtServer won't be able to start.
 
 **Example:**
 `host.minikube.internal:1443`
@@ -44,9 +43,9 @@ is not running on its default port but rather 1443.
 
 ### exposePorts
 An array with exactly two elements representing the start and stop of a range of ports that should be exposed of
-VirtServer hosts. These ports maps to your Virts running in VirtServer. The port that you would access them through will
-probably not be the same as the port you decide to open. If you have 10 Virts then you probably want to expose 10 ports.
-The Virts need to run on a port within this range.
+VirtServer hosts. These ports maps to your virtual services running in VirtServer. The port that you would access them through will
+probably not be the same as the port you decide to open. If you have 10 virtual services then you probably want to expose 10 ports.
+The virtual services need to run on a port within this range.
 
 **Example:**
 `[8000, 8010]`
@@ -61,8 +60,8 @@ ready-api-virtserver   NodePort   10.100.126.233   <none>        9090:32298/TCP,
 ### configStorageSize
 How big storage you want to give VirtServer for storing deployments, HAR-logs, audit logs, regular logs and more.
 Can start of as a small value of for example 1Gi, but ensure you then monitor storage space, so you can upgrade it or 
-clean out old logs whenever that is needed. Valid values are anything that would be valid as "Memory resource 
-units"(https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory).
+clean out old logs whenever needed. Valid values are anything that would be valid as [Memory resource 
+units](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory).
 
 **Example:**
 `1Gi`
@@ -78,7 +77,7 @@ Need to be the full image name including repository.
 Set to "true" or "false" to indicate whther an ingress should be setup to let connections to virtserver be done using
 an endpoint IP and paths rather than using nodeport IPs and ports. The endpoint IP is usually more stable and ports get
 remapped to paths meaning your scripts can rely on it more. However when running with an ingress only REST- and 
-SOAP-virts are supported.
+SOAP-"virtual services" are supported.
 
 When running with an ingress the port gets remapped, so if a virt is running on port 8004 you access it on the path 
 /virt-8004.
