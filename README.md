@@ -72,7 +72,7 @@ Which VirtServer image you want to run. This allows you to upgrade versions quic
 Need to be the full image name including repository.
 
 **Example:**
-`smartbear/ready-api-virtserver:3.10.0`
+`smartbear/ready-api-virtserver:3.12.1`
 
 ### useIngress
 Set to "true" or "false" to indicate whther an ingress should be setup to let connections to virtserver be done using
