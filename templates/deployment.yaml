@@ -28,7 +28,7 @@ spec:
             - name: VirtServerPassword
               value: svp4ever
             - name: UseHTTPS
-              value: "false"
+              value: "true"
             - name: ACCEPT_TOU
               value: "true"
             - name: VirtServerLicenseServer
@@ -45,12 +45,14 @@ spec:
             {{ end }}
           readinessProbe:
             httpGet:
+              scheme: HTTPS
               path: /api/v3/info/about/
-              port: virtserver
+              port: 9090
             initialDelaySeconds: 30
             periodSeconds: 15
           livenessProbe:
             httpGet:
+              scheme: HTTPS
               path: /api/v3/info/about/
               port: 9090
             initialDelaySeconds: 30

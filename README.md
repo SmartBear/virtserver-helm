@@ -23,7 +23,7 @@ manually started again.
 ### Uninstalling
 When it is time to bring down VirtServer you run:
 
-`helm uninstall virtserver . -f values.yaml`
+`helm uninstall virtserver`
 
 Configuration
 -------------
