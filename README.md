@@ -73,3 +73,12 @@ Need to be the full image name including repository.
 
 **Example:**
 `smartbear/ready-api-virtserver:3.10.0`
+
+### useIngress
+Set to "true" or "false" to indicate whther an ingress should be setup to let connections to virtserver be done using
+an endpoint IP and paths rather than using nodeport IPs and ports. The endpoint IP is usually more stable and ports get
+remapped to paths meaning your scripts can rely on it more. However when running with an ingress only REST- and 
+SOAP-virts are supported.
+
+When running with an ingress the port gets remapped, so if a virt is running on port 8004 you access it on the path 
+/virt-8004.
