@@ -17,7 +17,7 @@ Whenever you need to update your VirtServer to a new version or simply just rest
 
 `helm upgrade virtserver . -f values.yaml`
 
-This usually makes your VirtServer unavailable for a minute and any Virts not configured to autostart will need to be
+This usually makes your VirtServer unavailable for a minute and any virtual services not configured to autostart will need to be
 manually started again.
 
 ### Uninstalling
@@ -72,12 +72,3 @@ Need to be the full image name including repository.
 
 **Example:**
 `smartbear/ready-api-virtserver:3.12.1`
-
-### useIngress
-Set to "true" or "false" to indicate whther an ingress should be setup to let connections to virtserver be done using
-an endpoint IP and paths rather than using nodeport IPs and ports. The endpoint IP is usually more stable and ports get
-remapped to paths meaning your scripts can rely on it more. However when running with an ingress only REST- and 
-SOAP-"virtual services" are supported.
-
-When running with an ingress the port gets remapped, so if a virt is running on port 8004 you access it on the path 
-/virt-8004.

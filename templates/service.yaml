@@ -5,7 +5,7 @@ metadata:
   labels:
     run: ready-api-virtserver
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: admin
       port: 9090
