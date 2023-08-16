@@ -5,7 +5,7 @@ metadata:
 spec:
   strategy:
     type: Recreate
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
       run: ready-api-virtserver
@@ -33,6 +33,8 @@ spec:
               value: "true"
             - name: VirtServerLicenseServer
               value: {{ .Values.licenseServer }}
+            - name: SlmAccessKey
+              value: {{ .Values.SlmAccessKey }}
           volumeMounts:
             - name: virtserver-config-folder
               mountPath: /virtserver
