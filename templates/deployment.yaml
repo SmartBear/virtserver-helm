@@ -45,6 +45,13 @@ spec:
             {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | int) 1 }}
             - containerPort: {{$e | int}}
             {{ end }}
+          resources:
+            requests:
+              memory: {{ .Values.requests.memory }}
+              cpu: {{ .Values.requests.cpu }}
+            limits:
+              memory: {{ .Values.limits.memory }}
+              cpu: {{ .Values.limits.cpu }}
           readinessProbe:
             httpGet:
               scheme: HTTPS
