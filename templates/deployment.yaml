@@ -35,6 +35,10 @@ spec:
               value: {{ .Values.licenseServer }}
             - name: SlmAccessKey
               value: {{ .Values.SlmAccessKey }}
+            - name: JVM_OPT_1
+              value: {{ .Values.jvmInitialHeap}}
+            - name: JVM_OPT_2
+              value: {{ .Values.jvmMaxHeap }}
           volumeMounts:
             - name: virtserver-config-folder
               mountPath: /virtserver
