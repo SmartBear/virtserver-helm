@@ -1,4 +1,21 @@
-licenseServer: host.minikube.internal:1443
+licenseServer: https://api.slm.manage.smartbear.com:443
 exposePorts: [8000, 8010]
-configStorageSize: 1Gi
-image: smartbear/ready-api-virtserver:3.12.1
+configStorageSize: 8Gi
+image: smartbear/ready-api-virtserver:3.17.0
+SlmAccessKey: 90c04c67-6c7f-4e47-b5ac-2beba291106c
+replicaCount: 2
+
+Services:
+  ready-api-virtserver-1:
+    name: ready-api-virtserver-1
+    exposePorts: [8000, 8010]
+  ready-api-virtserver-2:
+    name: ready-api-virtserver-2
+    exposePorts: [8100, 8110]
+
+
+postgresql:
+  global:
+    postgresql:
+      auth:
+        postgresPassword: password

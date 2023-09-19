@@ -1,25 +1,27 @@
+{{- $root := . -}}
+{{- range $service := .Values.Services }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ready-api-virtserver
+  name: {{ $service.name }} 
+  labels:
+    app.kubernetes.io/name: {{ $service.name }}
 spec:
-  strategy:
-    type: Recreate
   replicas: 1
   selector:
     matchLabels:
-      run: ready-api-virtserver
+      app.kubernetes.io/name: {{ $service.name }}
   template:
     metadata:
       annotations:
-        rollme: {{ uuidv4 }}
       labels:
-        run: ready-api-virtserver
+        app.kubernetes.io/name: {{ $service.name }}
     spec:
       containers:
-        - name: ready-api-virtserver
-          image: {{ .Values.image }}
+        - name: {{ $service.name }} 
+          image: {{ $root.Values.image }}
           imagePullPolicy: IfNotPresent
+ 
           env:
             - name: VirtServerUserRole
               value: ADMIN
@@ -28,36 +30,43 @@ spec:
             - name: VirtServerPassword
               value: svp4ever
             - name: UseHTTPS
-              value: "true"
+              value: "false"
             - name: ACCEPT_TOU
               value: "true"
-            - name: VirtServerLicenseServer
-              value: {{ .Values.licenseServer }}
+            - name: SlmServerUrl
+              value: {{ $root.Values.licenseServer }}
+            - name: SlmAccessKey
+              value: {{ $root.Values.SlmAccessKey }}
+            - name: CONFIG
+              value: /virtserver/myconfig.yaml
           volumeMounts:
-            - name: virtserver-config-folder
-              mountPath: /virtserver
-              readOnly: false
+            - name: config-volume
+              mountPath: /virtserver/myconfig.yaml # Mount the ConfigMap as /myconfig.yaml
+              subPath: config.yaml # Use the key from the ConfigMap
           ports:
             - containerPort: 9090
               name: virtserver
-            {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | int) 1 }}
-            - containerPort: {{$e | int}}
+             {{ range $i, $e := untilStep (index $service.exposePorts 0 | int) (index $service.exposePorts 1 | add 1 | int) 1 }}
+            - name: virt-port-{{$e}}
+              containerPort: {{$e}}
             {{ end }}
           readinessProbe:
             httpGet:
-              scheme: HTTPS
+              scheme: HTTP
               path: /api/v3/info/about/
               port: 9090
             initialDelaySeconds: 30
             periodSeconds: 15
           livenessProbe:
             httpGet:
-              scheme: HTTPS
+              scheme: HTTP
               path: /api/v3/info/about/
               port: 9090
             initialDelaySeconds: 30
             periodSeconds: 15
       volumes:
-        - name: virtserver-config-folder
-          persistentVolumeClaim:
-            claimName: virtserver-config-folder
+        - name: config-volume
+          configMap:
+            name: virtserver-configmap 
+---
+{{- end }}

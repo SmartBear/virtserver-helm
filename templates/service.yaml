@@ -1,17 +1,20 @@
+{{- $root := . -}}
+{{- range $service := .Values.Services }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: ready-api-virtserver
+  name:  {{ $service.name }} 
   labels:
-    run: ready-api-virtserver
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - name: admin
       port: 9090
-    {{ range $i, $e := untilStep (index .Values.exposePorts 0 | int) (index .Values.exposePorts 1 | add 1 | int) 1 }}
+    {{ range $i, $e := untilStep (index $service.exposePorts 0 | int) (index $service.exposePorts 1 | add 1 | int) 1 }}
     - name: virt-port-{{$e}}
       port: {{$e}}
     {{ end }}
   selector:
-    run: ready-api-virtserver
+    app.kubernetes.io/name: {{ $service.name }}
+---
+{{- end }}

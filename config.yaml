@@ -1,0 +1,97 @@
+
+# H2 Database configurations
+database:
+  # the name of your JDBC driver
+  driverClass: org.postgresql.Driver
+
+  # the username
+  user: postgres
+
+  # the password
+  password: password
+
+  # the JDBC URL
+  url: jdbc:postgresql://virt-server-postgresql:5432/postgres
+
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
+
+  # the minimum number of connections to keep open
+  minSize: 8
+
+  # the maximum number of connections to keep open
+  maxSize: 32
+
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+
+  # how long a connection must be held before it can be validated
+  #checkConnectionHealthWhenIdleFor: 10s
+
+  # the maximum lifetime of an idle connection
+  #closeConnectionIfIdleFor: 1 minute
+
+# Logging settings.
+logging:
+
+  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+  level: INFO
+
+  loggers:
+    "com.smartbear": INFO
+    "com.hubspot.dropwizard.guice.AutoConfig": WARN
+    "io.dropwizard.server.DefaultServerFactory": WARN
+    "com.hubspot.dropwizard.guice.JerseyUtil" : WARN
+    "liquibase" : WARN
+
+  appenders:
+    - type: console
+      timeZone: Europe/Stockholm
+
+server:
+  # TimeZone
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: Europe/Stockholm
+
+  applicationConnectors:
+  - type: http
+    port: 9090
+  adminConnectors:
+  - type: http
+    port: 9091
+
+# VirtServer configuration
+virtServer:
+  # Maximum number of activity log to keep
+  maxActivityLog: 20
+
+  # Maximum number of transaction logs to keep. Storing many transaction logs may consume a lot of memory. Keep this as low as possible.
+  maxTransactionLog: 20
+
+  # Track virt usage for visualization in web control panel
+  trackVirtUsage: true
+  # Time unit to keep virt usage data, can be set to Days, Weeks, Months, Years, Defaults to Days
+  keepUsageDataUnit: Days
+  # Maximum number of time units to keep virt usage data
+  keepUsageDataTime: 90
+
+  # Enables automatic removal of the audit log. Period for which to keep old files can be configured below.
+  removeOldAuditLogs: true
+  # Time unit to keep the logs for, can be set to Days, Weeks, Months, Years, Defaults to Days
+  keepAuditLogUnit: Days
+  # Maximum number of time units to keep server audit logs
+  keepAuditLogTime: 90
+
+# LDAP settings
+#ldapConfiguration:
+  # provider url. Usually this value has next template: ldap://<hostname>:389
+  #ldapProviderUrl: 'ldap://<your host>:389'

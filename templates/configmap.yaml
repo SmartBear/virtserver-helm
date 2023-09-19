@@ -1,0 +1,8 @@
+# my-configmap-chart/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: virtserver-configmap
+data:
+  config.yaml: |-
+{{ .Files.Get "config.yaml" | indent 4 }}
